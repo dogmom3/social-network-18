@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require("mongoose");
+const { Schema, model, Types } = require('mongoose');
 const Thought = require('./Thought');
 
 const UserSchema = new Schema({
@@ -15,7 +15,7 @@ const UserSchema = new Schema({
     match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
   },
 
-  //ADD THESE EVENTUALLY?
+  //ADD EVENTUALLY?
   // password: {
   //   type: String,
   //   trim: true,
@@ -23,10 +23,10 @@ const UserSchema = new Schema({
   //   validate: [({ length }) => length >= 6, 'Password should be longer.']
   // },
 
-  // userCreated: {
-  //   type: Date,
-  //   default: Date.now
-  // },
+  userCreated: {
+    type: Date,
+    default: Date.now
+  },
 
   thoughts: [
     {

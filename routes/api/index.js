@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 //importing modules
-const userRoutes = require('./user-routes.js');
+const userRoutes = require('./user-routes');
 const thoughtRoutes = require('./thought-routes');
 
 //instructing router to use modules

@@ -20,6 +20,7 @@ mongoose.connect(
   }
 );
 
+//LOG MONGO QUERIES BEING EXECUTED
 mongoose.set('debug', true);
 
 app.listen(PORT, () => {

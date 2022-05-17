@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { get } = require("express/lib/response");
+// const { get } = require("express/lib/response");
 
 const {
   getThoughts,
@@ -12,10 +12,19 @@ const {
 
 // const { addFriend } = require("../../controllers/user-controller");
 
-router.route("/").get(getThoughts).post(addThought);
+router
+  .route("/")
+  .get(getThoughts)
+  .post(addThought);
 
-router.route("/:id").put(updateThought).delete(deleteThought);
+router
+  .route("/:id")
+  .put(updateThought)
+  .delete(deleteThought);
 
-router.route("/:thoughtId/reactions").post(addReaction).delete(deleteReaction);
+router
+  .route("/:thoughtId/reactions")
+  .post(addReaction)
+  .delete(deleteReaction);
 
 module.exports = router;
