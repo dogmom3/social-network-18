@@ -67,4 +67,4 @@ function formatTimestamp(date) {
 }
 const Thought = model("Thought", ThoughtSchema);
 
-module.exports = {Thought, User };
+module.exports = Thought;
