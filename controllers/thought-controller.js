@@ -3,30 +3,50 @@ const { Thought, User } = require("../models");
 const thoughtController = {
   //THOUGHT ROUTES
   //ADD A NEW THOUGHT
-  addThought(req, res) {
-    Thought.create(req.body)
-      .then((dbThoughtData) => {
+  addThought({ params, body }, res) {
+    console.log(body);
+    Thought.create(body)
+      .then(({ _id }) => {
         return User.findOneAndUpdate(
-          { _id: req.body.userId },
-          { $push: { thoughts: dbThoughtData } },
+          { _id: params.userId },
+          { $push: { thoughts: _id } },
           { new: true }
         );
       })
-      .then((dbUserData) => {
+      .then(dbUserData => {
         if (!dbUserData) {
-          return res
-            .status(404)
-            .json({
-              message: "Thought created, but there isn't a user with this id.",
-            });
+          res.status(404).json({ message: 'No user found with this id!' });
+          return;
         }
-        res.json({ message: "Thought successfully created!" });
+        res.json(dbUserData);
       })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
+      .catch(err => res.json(err));
   },
+  // addThought(req, res) {
+  //   Thought.create(req.body)
+  //     .then((dbThoughtData) => {
+  //       return User.findOneAndUpdate(
+  //         { _id: req.body.userId },
+  //         { $push: { thoughts: dbThoughtData } },
+  //         { new: true }
+  //       );
+  //     })
+  //     .then((dbUserData) => {
+  //       if (!dbUserData) {
+  //         return res
+  //           .status(404)
+  //           .json({
+  //             message: "Thought created, but there isn't a user with this id.",
+  //           });
+  //       }
+  //       res.json({ message: "Thought successfully created!" });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       res.status(500).json(err);
+  //     });
+  // },
+  
   //GET THOUGHTS
   getThoughts(req, res) {
     Thought.find({})

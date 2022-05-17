@@ -36,11 +36,14 @@ const ThoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: formatTimestamp,
+      // get: formatTimestamp,
     },
-    username: {
-      type: Schema.Types.ObjectId,
-      required: true
+    // username: {
+    //   type: Schema.Types.ObjectId,
+    //   required: true
+    // },
+    writtenBy: {
+      type: String
     },
     reactions: [ReactionSchema],
   },
@@ -64,4 +67,4 @@ function formatTimestamp(date) {
 }
 const Thought = model("Thought", ThoughtSchema);
 
-module.exports = Thought;
+module.exports = {Thought, User };
