@@ -1,24 +1,5 @@
 const { Schema, model } = require('mongoose');
-const ReactionSchema = new Schema({
-  reactionId: {
-    type: Schema.Types.ObjectId, 
-    default: new Schema.Types.ObjectId
-  },
-  reactionBody: {
-    type: String,
-    required: "You must enter a thought",
-    maxLength: 280
-  },
-  username: {
-    type: String,
-    required: "You must enter a username"
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    get: formatTimestamp
-  }
-})
+const Thought = model('Thought', ThoughtSchema);
 
 const ThoughtSchema = new Schema({
   thoughtText: {
@@ -38,18 +19,45 @@ username: {
 },
 reactions: [
   ReactionSchema 
-]
+],
+  toJSON: {
+      virtuals: true,
+      getters: true
+  },
+  id: false
 });
 
-function formatTimestamp(date){
-  return moment(date).format('MMMM Do YYYY, h:mm:ss a');
-  
-}
+const ReactionSchema = new Schema({
+  reactionId: {
+    type: Schema.Types.ObjectId, 
+    default: new Schema.Types.ObjectId
+  },
+  reactionBody: {
+    type: String,
+    required: "You must enter a thought",
+    maxLength: 280
+  },
+  username: {
+    type: String,
+    required: "You must enter a username"
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    get: formatTimestamp
+  },
+  toJSON: {
+    getters: true
+  }
+});
 
-UserSchema.virtual('reactionCount').get(function() {
+//RETRIEVES LENGTH OF THOUGHTS REACTIONS ARRAY FIELD
+ThoughtSchema.virtual('reactionCount').get(function() {
   return this.reactions.length
 });
 
-const Thought = model('Thought', ThoughtSchema);
+function formatTimestamp(date){
+  return moment(date).format('MMMM Do YY, h:mm a');
+}
 
 module.exports = Thought;

@@ -1,45 +1,58 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const UserSchema = new Schema({
   username: {
     type: String,
     unique: true,
     required: "You must enter a username",
-    trim: true
+    trim: true,
   },
 
   email: {
     type: String,
     unique: true,
-    required: "You must enter a valid email",
-    validate: {
-      //copied from stack overflow
-      validator: function(v) {
-          return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
-      },
-      message: "Please enter a valid email"
+    match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
   },
-  },
+
+  //ADD THESE EVENTUALLY?
+  // password: {
+  //   type: String,
+  //   trim: true,
+  //   required: 'Password is Required',
+  //   validate: [({ length }) => length >= 6, 'Password should be longer.']
+  // },
+
+  // userCreated: {
+  //   type: Date,
+  //   default: Date.now
+  // },
 
   thoughts: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Thought'
-    }
+      ref: "Thought",
+    },
   ],
 
   friends: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  ]
+      ref: "User",
+    },
+  ],
+  toJSON: {
+    virtuals: true,
+    getters: true,
+  },
+  //PREVENTS DUPLICATE ID
+  id: false,
 });
 
-UserSchema.virtual('friendCount').get(function() {
-  return this.friends.length
+//RETRIEVES NUMBER OF USERS FRIENDS 
+UserSchema.virtual("friendCount").get(function () {
+  return this.friends.length;
 });
 
-const User = model('User', UserSchema);
+const User = model("User", UserSchema);
 
 module.exports = User;
