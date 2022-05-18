@@ -6,10 +6,10 @@ const thoughtController = {
   addThought({ params, body }, res) {
     console.log(body);
     Thought.create(body)
-      .then(({ _id }) => {
+      .then((thoughtData) => {
         return User.findOneAndUpdate(
-          { _id: params.userId },
-          { $push: { thoughts: _id } },
+          { _id: body.userId },
+          { $push: { thoughts: thoughtData._id } },
           { new: true }
         );
       })
@@ -49,10 +49,10 @@ const thoughtController = {
   
   //GET THOUGHTS
   getThoughts(req, res) {
-    Thought.find({})
-      .select("-_v")
-      .sort({ _id: -1 })
-      .then((dbUserData) => res.json(dbUserData))
+    Thought.find()
+      // .select("-_v")
+      .sort({ createdAt: -1 })
+      .then((dbThoughtData) => res.json(dbThoughtData))
       .catch((err) => {
         console.log(err);
         res.sendStatus(400);
@@ -60,10 +60,15 @@ const thoughtController = {
   },
   //GET A SINGLE THOUGHT
   getThoughtById({ params }, res) {
-    Thought.findOne({ _id: params.id })
-      .select("-_v")
-      .sort({ _id: -1 })
-      .then((dbUserData) => res.json(dbUserData))
+    Thought.findOne({ _id: params.thoughtId })
+      // .select("-_v")
+      // .sort({ _id: -1 })
+      .then((dbThoughtData) => {
+        if(!dbThoughtData){
+          return res.status(404).json({message: 'No thought with this id'})
+        }
+        res.json(dbThoughtData)
+      })
       .catch((err) => {
         console.log(err);
         res.sendStatus(400);
