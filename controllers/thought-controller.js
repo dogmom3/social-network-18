@@ -1,4 +1,5 @@
 const { Thought, User } = require("../models");
+console.log('here')
 
 const thoughtController = {
   //THOUGHT ROUTES
@@ -58,9 +59,11 @@ const thoughtController = {
         res.sendStatus(400);
       });
   },
+
   //GET A SINGLE THOUGHT
   getThoughtById({ params }, res) {
-    Thought.findOne({ _id: params.thoughtId })
+    console.log('thought')
+    Thought.findOne({ _id: params.id })
       // .select("-_v")
       // .sort({ _id: -1 })
       .then((dbThoughtData) => {
@@ -105,7 +108,10 @@ const thoughtController = {
   //REACTION ROUTES
   //ADD REACTION
   addReaction({ params, body }, res) {
-    Thought.create(
+
+    console.log('flag', params.thoughtId)
+    console.log('flagsss', body)
+    Thought.findOneAndUpdate(
       { _id: params.thoughtId },
       { $push: { reactions: body } },
       { new: true, runValidators: true }
@@ -120,8 +126,10 @@ const thoughtController = {
       .catch((err) => res.json(err));
   },
   //DELETE REACTION
+  
   deleteReaction({ params }, res) {
-    Thought.findOneAndDelete(
+    console.log('here')
+    Thought.findOneAndUpdate(
       { _id: params.thoughtId },
       { $pull: { reactions: { reactionId: params.reactionId } } },
       { new: true }

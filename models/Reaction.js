@@ -21,11 +21,14 @@ const reactionSchema = new Schema({
       default: Date.now,
       get: formatTimeStamp => dateFormat(formatTimeStamp)
     },
-    // toJSON: {
-    //   getters: true
-    // },
+  }, {
+    toJSON: {
+      getters: true
+    },
     id: false
-  });
+  }
+  
+  );
 
   //RETRIEVES LENGTH OF THOUGHTS REACTIONS ARRAY FIELD
 // reactionSchema.virtual("reactionCount").get(function () {
